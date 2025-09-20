@@ -1,15 +1,19 @@
-// ui.js
-// Displays the drag-and-drop UI
-// --------------------------------------------------
-
 import { useState, useRef, useCallback } from 'react';
 import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
-import { InputNode } from './nodes/inputNode';
-import { LLMNode } from './nodes/llmNode';
-import { OutputNode } from './nodes/outputNode';
-import { TextNode } from './nodes/textNode';
+import { 
+InputNode,
+LLMNode,
+OutputNode,
+TextNode,
+DatabaseNode,
+APINode,
+TransformNode,
+FilterNode,
+MergeNode,
+ConditionNode
+} from './nodes/NodeFactory';
 
 import 'reactflow/dist/style.css';
 
@@ -20,6 +24,26 @@ const nodeTypes = {
   llm: LLMNode,
   customOutput: OutputNode,
   text: TextNode,
+  database: DatabaseNode,
+  api: APINode,
+  transform: TransformNode,
+  filter: FilterNode,
+  merge: MergeNode,
+  condition: ConditionNode,
+};
+
+const edgeOptions = {
+  style: {
+    stroke: '#6367f1',
+    strokeWidth: 2,
+    strokeDasharray: '5,5',
+  },
+  markerEnd: {
+    type: 'arrowclosed',
+    color: '#6367f1',
+    width: 20,
+    height: 20,
+  },
 };
 
 const selector = (state) => ({
@@ -59,7 +83,6 @@ export const PipelineUI = () => {
             const appData = JSON.parse(event.dataTransfer.getData('application/reactflow'));
             const type = appData?.nodeType;
       
-            // check if the dropped element is valid
             if (typeof type === 'undefined' || !type) {
               return;
             }
@@ -104,6 +127,7 @@ export const PipelineUI = () => {
                 proOptions={proOptions}
                 snapGrid={[gridSize, gridSize]}
                 connectionLineType='smoothstep'
+                defaultEdgeOptions={edgeOptions}
             >
                 <Background color="#aaa" gap={gridSize} />
                 <Controls />

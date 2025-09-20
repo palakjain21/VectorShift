@@ -1,4 +1,5 @@
-// draggableNode.js
+import React from 'react';
+import { getNodeIcon } from './utils/utils';
 
 export const DraggableNode = ({ type, label }) => {
     const onDragStart = (event, nodeType) => {
@@ -7,26 +8,20 @@ export const DraggableNode = ({ type, label }) => {
       event.dataTransfer.setData('application/reactflow', JSON.stringify(appData));
       event.dataTransfer.effectAllowed = 'move';
     };
+
+    const IconComponent = getNodeIcon(type);
   
     return (
       <div
-        className={type}
         onDragStart={(event) => onDragStart(event, type)}
         onDragEnd={(event) => (event.target.style.cursor = 'grab')}
-        style={{ 
-          cursor: 'grab', 
-          minWidth: '80px', 
-          height: '60px',
-          display: 'flex', 
-          alignItems: 'center', 
-          borderRadius: '8px',
-          backgroundColor: '#1C2536',
-          justifyContent: 'center', 
-          flexDirection: 'column'
-        }} 
+        className={`${type} cursor-grab min-w-[100px] h-[40px] px-2 flex items-center rounded-md bg-primary-800 justify-center flex-col hover:bg-primary-900`}
         draggable
       >
+        <div className="flex items-center gap-1">
+          <IconComponent size={14} style={{ color: '#fff' }} />
           <span style={{ color: '#fff' }}>{label}</span>
+        </div>
       </div>
     );
   };
