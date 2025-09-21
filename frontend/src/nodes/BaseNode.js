@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Handle, Position } from 'reactflow';
 import { getNodeIcon } from '../utils/utils';
+import { VariableInput } from '../components/VariableInput';
+import { FiX } from 'react-icons/fi';
+import { useStore } from '../store';
 
 export const BaseNode = ({ 
   id, 
@@ -9,6 +12,7 @@ export const BaseNode = ({
   onDataChange 
 }) => {
   const [nodeData, setNodeData] = useState(data || {});
+  const deleteNode = useStore((state) => state.deleteNode);
 
   const getColorClasses = (color) => {
     const colorMap = {
@@ -32,6 +36,10 @@ export const BaseNode = ({
     if (onDataChange) {
       onDataChange(newData);
     }
+  };
+
+  const handleDeleteNode = () => {
+    deleteNode(id);
   };
 
   const renderField = (field) => {
@@ -67,12 +75,14 @@ export const BaseNode = ({
             <label className="block text-xs text-primary-700 mb-1">
               {label} {required && <span className="text-red-500">*</span>}
             </label>
-            <textarea
+            <VariableInput
               value={value}
-              onChange={(e) => handleFieldChange(key, e.target.value)}
+              onChange={(newValue) => handleFieldChange(key, newValue)}
               placeholder={placeholder}
               className={`${commonClasses} resize-none`}
+              type="textarea"
               rows={3}
+              currentNodeId={id}
             />
           </div>
         );
@@ -114,12 +124,13 @@ export const BaseNode = ({
             <label className="block text-xs text-primary-700 mb-1">
               {label} {required && <span className="text-red-500">*</span>}
             </label>
-            <input
-              type="text"
+            <VariableInput
               value={value}
-              onChange={(e) => handleFieldChange(key, e.target.value)}
+              onChange={(newValue) => handleFieldChange(key, newValue)}
               placeholder={placeholder}
               className={commonClasses}
+              type="text"
+              currentNodeId={id}
             />
           </div>
         );
@@ -157,7 +168,7 @@ export const BaseNode = ({
     <div className={`w-64 bg-white border border-primary-300 rounded-lg shadow-sm ${config?.className || ''}`}>
       {config?.inputs?.map((handle, index) => renderHandle(handle, index))}
       
-      <div className={`${colors.bg} px-3 py-2 rounded-t-lg border-b border-primary-300`}>
+      <div className={`${colors.bg} px-3 py-2 rounded-t-lg border-b border-primary-300 relative`}>
         <div className="flex items-center gap-2">
           <IconComponent  size={14}  className='text-primary-900'/>
 
@@ -168,6 +179,14 @@ export const BaseNode = ({
         <p className={`${colors.textLight} text-xs mt-1`}>
           {config?.description || 'Node description'}
         </p>
+        
+        <button
+          onClick={handleDeleteNode}
+          className="absolute top-2 right-2 p-1 rounded-full hover:bg-red-100 hover:text-red-600 text-primary-600 transition-colors duration-200"
+          title="Delete node"
+        >
+          <FiX size={14} />
+        </button>
       </div>
       
       <div className="p-3 space-y-3">

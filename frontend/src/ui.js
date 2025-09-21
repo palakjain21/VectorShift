@@ -54,6 +54,7 @@ const selector = (state) => ({
   onNodesChange: state.onNodesChange,
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
+  deleteNode: state.deleteNode,
 });
 
 export const PipelineUI = () => {
@@ -66,7 +67,8 @@ export const PipelineUI = () => {
       addNode,
       onNodesChange,
       onEdgesChange,
-      onConnect
+      onConnect,
+      deleteNode
     } = useStore(selector, shallow);
 
     const getInitNodeData = (nodeID, type) => {

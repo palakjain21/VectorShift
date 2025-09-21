@@ -8,7 +8,7 @@ import {
     FiRefreshCw, 
     FiFilter, 
     FiGitMerge, 
-    FiGitBranch 
+    FiGitBranch, 
   } from 'react-icons/fi';
   
   export const getNodeIcon = (type) => {
