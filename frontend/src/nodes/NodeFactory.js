@@ -40,7 +40,6 @@ export const InputNode = createNode('input');
 export const OutputNode = createNode('output');
 export const TextNode = createNode('text');
 export const LLMNode = createNode('llm');
-export const DatabaseNode = createNode('database');
 export const APINode = createNode('api');
 export const TransformNode = createNode('transform');
 export const FilterNode = createNode('filter');

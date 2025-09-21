@@ -62,7 +62,7 @@ export const MyNewNode = createNode('myNewNode');
 ### Using Existing Nodes
 
 ```javascript
-import { DatabaseNode, APINode, TransformNode } from './nodes';
+import { APINode, TransformNode } from './nodes';
 
 // Use in your React Flow
 <DatabaseNode id="db-1" data={{ query: "SELECT * FROM users" }} />

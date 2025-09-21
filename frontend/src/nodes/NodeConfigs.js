@@ -9,7 +9,7 @@ export const NODE_CONFIGS = {
         key: 'inputName',
         type: 'text',
         label: 'Name',
-        defaultValue: 'input_',
+        defaultValue: 'input_1',
         required: true
       },
       {
@@ -27,7 +27,11 @@ export const NODE_CONFIGS = {
         type: 'file',
         label: 'Upload File',
         accept: '.txt,.pdf,.doc,.docx',
-        required: false
+        required: false,
+        showWhen: {
+          field: 'inputType',
+          value: 'File'
+        }
       }
     ],
     outputs: [
@@ -49,7 +53,7 @@ export const NODE_CONFIGS = {
         key: 'outputName',
         type: 'text',
         label: 'Name',
-        defaultValue: 'output_',
+        defaultValue: 'output_1',
         required: true
       },
       {
@@ -79,6 +83,13 @@ export const NODE_CONFIGS = {
     color: 'primary',
     fields: [
       {
+        key: 'textName',
+        type: 'text',
+        label: 'Name',
+        defaultValue: 'text_1',
+        required: true
+      },
+      {
         key: 'text',
         type: 'text',
         label: 'Text',
@@ -101,6 +112,13 @@ export const NODE_CONFIGS = {
     description: 'Generate text using large language models.',
     color: 'primary',
     fields: [
+      {
+        key: 'llmName',
+        type: 'text',
+        label: 'Name',
+        defaultValue: 'llm_1',
+        required: true
+      },
       {
         key: 'model',
         type: 'select',
@@ -152,55 +170,19 @@ export const NODE_CONFIGS = {
       }
     ]
   },
-
-  // New example nodes
-  database: {
-    type: 'database',
-    title: 'Database',
-    description: 'Execute SQL queries on connected databases.',
-    color: 'primary',
-    fields: [
-      {
-        key: 'query',
-        type: 'textarea',
-        label: 'SQL Query',
-        placeholder: 'SELECT * FROM users WHERE...',
-        required: true
-      },
-      {
-        key: 'database',
-        type: 'select',
-        label: 'Database',
-        options: [
-          { value: 'postgres', label: 'PostgreSQL' },
-          { value: 'mysql', label: 'MySQL' },
-          { value: 'sqlite', label: 'SQLite' }
-        ],
-        defaultValue: 'postgres'
-      }
-    ],
-    inputs: [
-      {
-        type: 'target',
-        position: 'left',
-        id: 'connection'
-      }
-    ],
-    outputs: [
-      {
-        type: 'source',
-        position: 'right',
-        id: 'result'
-      }
-    ]
-  },
-
   api: {
     type: 'api',
     title: 'API Call',
     description: 'Make HTTP requests to external APIs.',
     color: 'primary',
     fields: [
+      {
+        key: 'apiName',
+        type: 'text',
+        label: 'Name',
+        defaultValue: 'api_1',
+        required: true
+      },
       {
         key: 'url',
         type: 'text',
@@ -245,6 +227,13 @@ export const NODE_CONFIGS = {
     color: 'primary',
     fields: [
       {
+        key: 'transformName',
+        type: 'text',
+        label: 'Name',
+        defaultValue: 'transform_1',
+        required: true
+      },
+      {
         key: 'expression',
         type: 'textarea',
         label: 'JavaScript Expression',
@@ -286,6 +275,13 @@ export const NODE_CONFIGS = {
     color: 'primary',
     fields: [
       {
+        key: 'filterName',
+        type: 'text',
+        label: 'Name',
+        defaultValue: 'filter_1',
+        required: true
+      },
+      {
         key: 'condition',
         type: 'textarea',
         label: 'Filter Condition',
@@ -325,6 +321,13 @@ export const NODE_CONFIGS = {
     description: 'Combine data from multiple sources.',
     color: 'primary',
     fields: [
+      {
+        key: 'mergeName',
+        type: 'text',
+        label: 'Name',
+        defaultValue: 'merge_1',
+        required: true
+      },
       {
         key: 'strategy',
         type: 'select',
@@ -371,6 +374,13 @@ export const NODE_CONFIGS = {
     description: 'Check if a condition is met.',
     color: 'primary',
     fields: [
+      {
+        key: 'conditionName',
+        type: 'text',
+        label: 'Name',
+        defaultValue: 'condition_1',
+        required: true
+      },
       {
         key: 'condition',
         type: 'textarea',

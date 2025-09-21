@@ -9,7 +9,6 @@ export {
   OutputNode,
   TextNode,
   LLMNode,
-  DatabaseNode,
   APINode,
   TransformNode,
   FilterNode,
@@ -19,7 +18,6 @@ export {
 
 export { 
   EXAMPLE_NODES,
-  DatabaseNode as ExampleDatabaseNode,
   APINode as ExampleAPINode,
   TransformNode as ExampleTransformNode,
   FilterNode as ExampleFilterNode,

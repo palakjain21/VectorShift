@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Handle, Position } from 'reactflow';
 import { getNodeIcon } from '../utils/utils';
-import { VariableInput } from '../components/VariableInput';
+import { VariableInput } from '../components/ui_components/VariableInput';
 import { FiX } from 'react-icons/fi';
 import { useStore } from '../store';
+import { Button } from '../components/common_components/Button';
+import { Card, CardHeader, CardBody } from '../components/common_components/Card';  
 
 export const BaseNode = ({ 
   id, 
@@ -13,6 +15,7 @@ export const BaseNode = ({
 }) => {
   const [nodeData, setNodeData] = useState(data || {});
   const deleteNode = useStore((state) => state.deleteNode);
+  const updateNodeField = useStore((state) => state.updateNodeField);
 
   const getColorClasses = (color) => {
     const colorMap = {
@@ -33,6 +36,9 @@ export const BaseNode = ({
   const handleFieldChange = (fieldKey, value) => {
     const newData = { ...nodeData, [fieldKey]: value };
     setNodeData(newData);
+    
+    updateNodeField(id, fieldKey, value);
+    
     if (onDataChange) {
       onDataChange(newData);
     }
@@ -43,10 +49,17 @@ export const BaseNode = ({
   };
 
   const renderField = (field) => {
-    const { key, type, label, options, placeholder, required } = field;
+    const { key, type, label, options, placeholder, required, showWhen } = field;
     const value = nodeData[key] || field.defaultValue || '';
 
-    const commonClasses = "w-full text-xs border border-primary-200 rounded px-2 py-1 bg-white text-primary-700 focus:outline-none focus:ring-1 focus:ring-primary-500";
+    if (showWhen) {
+      const { field: conditionField, value: conditionValue } = showWhen;
+      if (nodeData[conditionField] !== conditionValue) {
+        return null;
+      }
+    }
+
+    const commonClasses = "w-full text-xs border border-primary-200 rounded px-2 py-1 bg-white text-primary-700 focus:outline-none focus:ring-1 focus:ring-1 focus:ring-primary-500";
 
     switch (type) {
       case 'select':
@@ -165,10 +178,10 @@ export const BaseNode = ({
   };
 
   return (
-    <div className={`w-64 bg-white border border-primary-300 rounded-lg shadow-sm ${config?.className || ''}`}>
+    <Card variant="primary" className={`w-64 ${config?.className || ''}`}>
       {config?.inputs?.map((handle, index) => renderHandle(handle, index))}
       
-      <div className={`${colors.bg} px-3 py-2 rounded-t-lg border-b border-primary-300 relative`}>
+      <CardHeader variant="primary" className="relative">
         <div className="flex items-center gap-2">
           <IconComponent  size={14}  className='text-primary-900'/>
 
@@ -180,21 +193,21 @@ export const BaseNode = ({
           {config?.description || 'Node description'}
         </p>
         
-        <button
+        <Button
           onClick={handleDeleteNode}
-          className="absolute top-2 right-2 p-1 rounded-full hover:bg-red-100 hover:text-red-600 text-primary-600 transition-colors duration-200"
+          variant="iconDanger"
+          icon={FiX}
+          className="absolute top-2 right-2"
           title="Delete node"
-        >
-          <FiX size={14} />
-        </button>
-      </div>
+        />
+      </CardHeader>
       
-      <div className="p-3 space-y-3">
+      <CardBody className="p-3 space-y-3">
         {config?.fields?.map(renderField)}
         {config?.customContent && config.customContent(nodeData, handleFieldChange)}
-      </div>
+      </CardBody>
       
       {config?.outputs?.map((handle, index) => renderHandle(handle, index))}
-    </div>
+    </Card>
   );
 };

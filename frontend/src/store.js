@@ -1,5 +1,3 @@
-// store.js
-
 import { create } from "zustand";
 import {
     addEdge,
@@ -11,6 +9,13 @@ import {
 export const useStore = create((set, get) => ({
     nodes: [],
     edges: [],
+    alert: {
+        show: false,
+        type: 'success',
+        title: '',
+        message: '',
+        data: null
+    },
     getNodeID: (type) => {
         const newIDs = {...get().nodeIDs};
         if (newIDs[type] === undefined) {
@@ -55,6 +60,28 @@ export const useStore = create((set, get) => ({
       set({
         nodes: get().nodes.filter((node) => node.id !== nodeId),
         edges: get().edges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId),
+      });
+    },
+    showAlert: (type, title, message, data = null) => {
+      set({
+        alert: {
+          show: true,
+          type,
+          title,
+          message,
+          data
+        }
+      });
+    },
+    hideAlert: () => {
+      set({
+        alert: {
+          show: false,
+          type: 'success',
+          title: '',
+          message: '',
+          data: null
+        }
       });
     },
   }));
